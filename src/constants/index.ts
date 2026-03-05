@@ -28,6 +28,7 @@ export const STORAGE_KEYS = {
 export const CATEGORIES = [
   { id: 'men', name: 'Men', icon: 'person' },
   { id: 'women', name: 'Women', icon: 'person-outline' },
+  { id: 'kids', name: 'Kids', icon: 'happy' },
   { id: 'jewellery', name: 'Jewellery', icon: 'diamond' },
   { id: 'accessories', name: 'Accessories', icon: 'watch' },
 ] as const;

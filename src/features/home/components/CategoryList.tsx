@@ -11,32 +11,43 @@ import { Ionicons } from '@expo/vector-icons';
 export const CategoryList: React.FC = () => {
   return (
     <View className="mb-6">
-      <View className="px-4 mb-3">
+      {/* ---------- TITLE ---------- */}
+      <View className="px-4 mb-4">
         <Text className="text-xl font-bold text-gray-900 dark:text-white">
           Shop by Category
         </Text>
       </View>
 
+      {/* ---------- CATEGORY SCROLL ---------- */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="px-4"
-        contentContainerStyle={{ gap: 16 }}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          gap: 18,
+        }}
       >
         {CATEGORIES.map((category) => (
           <TouchableOpacity
             key={category.id}
-            className="items-center"
             onPress={() => router.push(`/category/${category.id}`)}
+            activeOpacity={0.75}
+            className="items-center w-20"
           >
-            <View className="w-20 h-20 bg-white dark:bg-gray-800 rounded-full items-center justify-center mb-2 shadow-md">
+            {/* ICON CIRCLE */}
+            <View className="w-18 h-18 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 items-center justify-center shadow-sm mb-2">
               <Ionicons
                 name={category.icon as any}
-                size={32}
+                size={30}
                 color="#e8496d"
               />
             </View>
-            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
+
+            {/* LABEL */}
+            <Text
+              numberOfLines={1}
+              className="text-xs font-semibold text-gray-700 dark:text-gray-300 text-center"
+            >
               {category.name}
             </Text>
           </TouchableOpacity>

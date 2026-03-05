@@ -5,7 +5,15 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useCartStore } from '@store/index';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import Animated, { 
+  useAnimatedStyle, 
+  useSharedValue, 
+  withTiming,
+  Easing
+} from 'react-native-reanimated';
+import { useEffect } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function TabBarBadge({ count }: { count: number }) {
   if (count === 0) return null;
@@ -21,6 +29,28 @@ function TabBarBadge({ count }: { count: number }) {
 
 export default function TabsLayout() {
   const cart = useCartStore((state) => state.cart);
+  const tabBarHeight = useSharedValue(60);
+  const insets = useSafeAreaInsets();
+  
+  const animatedTabBarStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(tabBarHeight.value, {
+        duration: 300,
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      }),
+      opacity: withTiming(tabBarHeight.value === 60 ? 1 : 0, {
+        duration: 200,
+      }),
+      transform: [
+        {
+          translateY: withTiming(tabBarHeight.value === 60 ? 0 : 60, {
+            duration: 300,
+            easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          }),
+        },
+      ],
+    };
+  });
 
   return (
     <Tabs
@@ -29,11 +59,17 @@ export default function TabsLayout() {
         tabBarActiveTintColor: '#e8496d',
         tabBarInactiveTintColor: '#9ca3af',
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
+          height: 60 + insets.bottom,
+          paddingBottom: insets.bottom + 8,
           paddingTop: 8,
           borderTopWidth: 1,
           borderTopColor: '#e5e7eb',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 3,
+          elevation: 5,
+          backgroundColor: '#ffffff',
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -48,6 +84,11 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
+        }}
+        listeners={{
+          tabPress: () => {
+            tabBarHeight.value = 60;
+          },
         }}
       />
       <Tabs.Screen

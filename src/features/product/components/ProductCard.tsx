@@ -3,10 +3,11 @@
  */
 
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import type { Product } from '@/types';
-import { formatCurrency, calculateDiscount } from '@utils/helpers';
+import { formatCurrency, calculateDiscount, hapticFeedback } from '@utils/helpers';
 import { useWishlistStore } from '@store/index';
 import { Badge } from '@components/ui';
 
@@ -28,12 +29,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     ? calculateDiscount(product.originalPrice, product.price)
     : 0;
 
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
+
+  const handleWishlistToggle = () => {
+    if (inWishlist) {
+      hapticFeedback.light();
+    } else {
+      hapticFeedback.success();
+    }
+    toggleWishlist(product);
+  };
+
   return (
-    <TouchableOpacity
-      style={{ width }}
+    <Animated.View style={[{ width }, animatedStyle]}>
+    <Pressable
       className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm"
       onPress={onPress}
-      activeOpacity={0.8}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
     >
       {/* Product Image */}
       <View className="relative">
@@ -56,7 +81,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="absolute top-2 right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full items-center justify-center"
           onPress={(e) => {
             e.stopPropagation();
-            toggleWishlist(product);
+            handleWishlistToggle();
           }}
         >
           <Ionicons
@@ -100,6 +125,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
+    </Animated.View>
   );
 };

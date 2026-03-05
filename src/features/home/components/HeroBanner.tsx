@@ -11,17 +11,17 @@ const { width } = Dimensions.get('window');
 const BANNERS = [
   {
     id: '1',
-    image: 'https://via.placeholder.com/800x400/e8496d/ffffff?text=Summer+Sale+50%+OFF',
+    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=400&fit=crop',
     title: 'Summer Sale',
   },
   {
     id: '2',
-    image: 'https://via.placeholder.com/800x400/3b82f6/ffffff?text=New+Arrivals',
+    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=400&fit=crop',
     title: 'New Arrivals',
   },
   {
     id: '3',
-    image: 'https://via.placeholder.com/800x400/10b981/ffffff?text=Festive+Collection',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&h=400&fit=crop',
     title: 'Festive Collection',
   },
 ];

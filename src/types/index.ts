@@ -68,7 +68,7 @@ export interface ProductVariant {
   priceModifier?: number;
 }
 
-export type Category = 'men' | 'women' | 'jewellery' | 'accessories';
+export type Category = 'Men' | 'Women' | 'Kids' | 'Jewellery' | 'Accessories' | 'Electronics' | 'Fashion' | 'Sports' | 'Home & Kitchen';
 
 export interface ProductFilter {
   category?: Category;
@@ -198,6 +198,7 @@ export interface Review {
   comment: string;
   images?: string[];
   helpful: number;
+  verified?: boolean;
   createdAt: string;
 }
 

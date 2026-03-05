@@ -46,7 +46,7 @@ export const Card: React.FC<CardProps> = ({
         `}
         onPress={onPress}
         activeOpacity={0.7}
-        {...props}
+        {...(props as TouchableOpacityProps)}
       >
         {children}
       </TouchableOpacity>

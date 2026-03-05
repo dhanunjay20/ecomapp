@@ -19,13 +19,19 @@ export const CartItem: React.FC<CartItemProps> = ({
   onRemove,
   onUpdateQuantity,
 }) => {
-  const { product, variant, quantity } = item;
+  // Handle both full CartItem type and simplified cart item
+  const product = 'product' in item ? item.product : item;
+  const variant = 'variant' in item ? item.variant : undefined;
+  const quantity = item.quantity;
+  const images = 'images' in product ? product.images : (product as any).images || [];
+  const name = 'name' in product ? product.name : (product as any).name || '';
+  const price = 'price' in product ? product.price : (product as any).price || 0;
 
   return (
     <View className="bg-white dark:bg-gray-800 rounded-xl p-3 mb-3 flex-row">
       {/* Product Image */}
       <Image
-        source={{ uri: product.images[0] }}
+        source={{ uri: images[0] || 'https://via.placeholder.com/150' }}
         className="w-24 h-24 rounded-lg bg-gray-200 dark:bg-gray-700"
         resizeMode="cover"
       />
@@ -36,7 +42,7 @@ export const CartItem: React.FC<CartItemProps> = ({
           className="text-base font-medium text-gray-900 dark:text-white mb-1"
           numberOfLines={2}
         >
-          {product.name}
+          {name}
         </Text>
 
         {variant && (
@@ -46,7 +52,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         )}
 
         <Text className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-          {formatCurrency(product.price * quantity)}
+          {formatCurrency(price * quantity)}
         </Text>
 
         {/* Quantity Controls */}

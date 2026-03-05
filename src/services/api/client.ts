@@ -124,7 +124,7 @@ class ApiClient {
   // Retry logic wrapper
   private async withRetry<T>(
     fn: () => Promise<T>,
-    retries = API_CONFIG.RETRY_ATTEMPTS,
+    retries: number = API_CONFIG.RETRY_ATTEMPTS,
     delay: number = API_CONFIG.RETRY_DELAY
   ): Promise<T> {
     try {
@@ -143,7 +143,7 @@ class ApiClient {
     return this.withRetry(async () => {
       const response = await this.client.get(url, config);
       return response.data;
-    });
+    }, API_CONFIG.RETRY_ATTEMPTS);
   }
 
   async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {

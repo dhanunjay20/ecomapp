@@ -2,6 +2,21 @@
  * Utility Functions
  */
 
+import * as Haptics from 'expo-haptics';
+
+/**
+ * Haptic Feedback Utilities
+ */
+export const hapticFeedback = {
+  light: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+  medium: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
+  heavy: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy),
+  success: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success),
+  warning: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning),
+  error: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error),
+  selection: () => Haptics.selectionAsync(),
+};
+
 /**
  * Format currency with Indian Rupee symbol
  */
@@ -75,7 +90,7 @@ export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout>;
   
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);

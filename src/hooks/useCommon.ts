@@ -2,7 +2,7 @@
  * Reusable Custom Hooks
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Keyboard, Platform } from 'react-native';
 import { debounce } from '@utils/helpers';
 
@@ -55,7 +55,7 @@ export const useKeyboard = () => {
  * Hook for previous value
  */
 export const usePrevious = <T>(value: T): T | undefined => {
-  const ref = useRef<T>();
+  const ref = useRef<T | undefined>(undefined);
 
   useEffect(() => {
     ref.current = value;
@@ -68,12 +68,8 @@ export const usePrevious = <T>(value: T): T | undefined => {
  * Hook for toggle state
  */
 export const useToggle = (initialState = false): [boolean, () => void] => {
-  const [state, setState] = useState(initialState);
-
-  const toggle = useCallback(() => {
-    setState(prevState => !prevState);
-  }, []);
-
+  const [state, setState] = React.useState(initialState);
+  const toggle = React.useCallback(() => setState(s => !s), []);
   return [state, toggle];
 };
 
